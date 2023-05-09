@@ -26,7 +26,7 @@ def main():
 
     # Call the generate_qr function with the provided arguments
     try:
-        ver, ecl, qr_name = generate_qr(
+        ver, error_correction_level, qr_name = generate_qr(
             args.Words,
             args.version,
             args.level,
@@ -39,6 +39,6 @@ def main():
         )
 
         # Print a success message and the path to the QR code
-        print('Succeed! \nCheck out your', str(ver) + '-' + str(ecl), 'QR-code:', qr_name)
+        print('Succeed! \nCheck out your', str(ver) + '-' + str(error_correction_level), 'QR-code:', qr_name)
     except:
         raise

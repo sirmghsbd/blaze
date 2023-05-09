@@ -2,7 +2,7 @@
      
 from blazeqr.qrlibs.constant import alignment_location, format_info_str, version_info_str, error_correction_level_index_map
     
-def get_qrmatrix(ver, ecl, bits):
+def get_qrmatrix(ver, error_correction_level, bits):
     num = (ver - 1) * 4 + 21
     qrmatrix = [[None] * num for i in range(num)]
     #  [([None] * num * num)[i:i+num] for i in range(num * num) if i % num == 0] 
@@ -28,7 +28,7 @@ def get_qrmatrix(ver, ecl, bits):
     mask_num, qrmatrix = mask(maskmatrix, qrmatrix)
     
     # Format Information
-    add_format_and_version_string(ver, ecl, mask_num, qrmatrix)
+    add_format_and_version_string(ver, error_correction_level, mask_num, qrmatrix)
 
     return qrmatrix
 
@@ -179,8 +179,8 @@ def compute_score(m):
     score = evaluation1(m) + evaluation2(m)+ evaluation3(m) + evaluation4(m)
     return score
     
-def add_format_and_version_string(ver, ecl, mask_num, m):
-    fs = [int(i) for i in format_info_str[error_correction_level_index_map[ecl]][mask_num]]
+def add_format_and_version_string(ver, error_correction_level, mask_num, m):
+    fs = [int(i) for i in format_info_str[error_correction_level_index_map[error_correction_level]][mask_num]]
     for j in range(6):
         m[8][j] = m[-j-1][8] = fs[j]
         m[8][-j-1] = m[j][8] = fs[-j-1]

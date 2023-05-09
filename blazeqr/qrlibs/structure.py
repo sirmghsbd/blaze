@@ -1,12 +1,12 @@
 from blazeqr.qrlibs.constant import required_remainder_bits, error_correction_level_index_map, grouping_list
 
 
-def structure_final_bits(ver: int, ecl: str, data_codewords: list, ecc: list) -> str:
+def structure_final_bits(ver: int, error_correction_level: str, data_codewords: list, ecc: list) -> str:
     """Interleaves data codewords and error correction codewords to form the final bit sequence.
 
     Args:
         ver (int): The QR code version.
-        ecl (str): The error correction level.
+        error_correction_level (str): The error correction level.
         data_codewords (list): A list of data codewords.
         ecc (list): A list of error correction codewords.
 
@@ -14,7 +14,7 @@ def structure_final_bits(ver: int, ecl: str, data_codewords: list, ecc: list) ->
         str: The final bit sequence.
     """
     # Interleave data codewords and error correction codewords
-    final_message = interleave_dc(data_codewords, ver, ecl) + interleave_ecc(ecc)
+    final_message = interleave_dc(data_codewords, ver, error_correction_level) + interleave_ecc(ecc)
     
     # Convert to binary and add remainder bits if necessary
     final_bits = ''.join(['0'*(8-len(i))+i for i in [bin(i)[2:] for i in final_message]]) + '0' * required_remainder_bits[ver-1]
@@ -22,13 +22,13 @@ def structure_final_bits(ver: int, ecl: str, data_codewords: list, ecc: list) ->
     return final_bits
 
 
-def interleave_dc(data_codewords: list, ver: int, ecl: str) -> list:
+def interleave_dc(data_codewords: list, ver: int, error_correction_level: str) -> list:
     """Interleaves data codewords.
 
     Args:
         data_codewords (list): A list of data codewords.
         ver (int): The QR code version.
-        ecl (str): The error correction level.
+        error_correction_level (str): The error correction level.
 
     Returns:
         list: The interleaved data codewords.
@@ -38,7 +38,7 @@ def interleave_dc(data_codewords: list, ver: int, ecl: str) -> list:
         interleaved_data += list(t)
     
     # Add the last bit of each row for rectangular QR codes
-    g = grouping_list[ver-1][error_correction_level_index_map[ecl]]
+    g = grouping_list[ver-1][error_correction_level_index_map[error_correction_level]]
     if g[3]:
         for i in range(g[2]):
             interleaved_data.append(data_codewords[i-g[2]][-1])

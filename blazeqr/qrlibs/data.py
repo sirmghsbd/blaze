@@ -1,37 +1,46 @@
-from blazeqr.qrlibs.constant import char_cap, required_bytes, mode_index_map, error_correction_level_index_map, num_list, alphanum_list, grouping_list, mode_indicator
-       
+from blazeqr.qrlibs.constant import (
+    char_cap, 
+    required_bytes, 
+    mode_index_map, 
+    error_correction_level_index_map, 
+    num_list, 
+    alphanum_list, 
+    grouping_list, 
+    mode_indicator
+)
+
 # dict with encoding functions for each mode
-mode_encoding = {
-    'numeric': lambda s: numeric_encoding(s),
-    'alphanumeric': lambda s: alphanumeric_encoding(s),
-    'byte': lambda s: byte_encoding(s),
-    'kanji': lambda s: kanji_encoding(s)
+encoding_functions = {
+    'numeric': lambda s: encode_numeric_data(s),
+    'alphanumeric': lambda s: encode_alphanumeric_data(s),
+    'byte': lambda s: encode_byte_data(s),
+    'kanji': lambda s: encode_kanji_data(s)
 }
 
-def encode(ver, ecl, str):
+def encode(ver, error_correction_level, str):
     # determine the best encoding mode and QR code version
-    ver, mode = determine_qr_params(ver, ecl, str)
-    print('line 16: mode:', mode)
+    ver, mode = determine_qr_version_and_mode(ver, error_correction_level, str)
+    print(f'mode: {mode}')
     
     # generate the QR code data
-    code = mode_indicator[mode] + get_cci(ver, mode, str) + mode_encoding[mode](str)
+    code = mode_indicator[mode] + get_character_count_indicator(ver, mode, str) + encoding_functions[mode](str)
     
     # add a terminator
-    required_bits = 8 * required_bytes[ver-1][error_correction_level_index_map[ecl]]
-    b = required_bits - len(code)
-    code += '0000' if b >= 4 else '0' * b
+    required_bits = 8 * required_bytes[ver-1][error_correction_level_index_map[error_correction_level]]
+    terminator_len = required_bits - len(code)
+    code += '0000' if terminator_len >= 4 else '0' *  terminator_len
     
     # make the length a multiple of 8
     while len(code) % 8 != 0:
         code += '0'
     
     # add pad bytes if the data is still too short
-    while len(code) < required_bits:    
+    while len(code) < required_bits:
         code += '1110110000010001' if required_bits - len(code) >= 16 else '11101100'
         
     # partition the data into codewords
     data_code = [int(code[i:i+8], 2) for i in range(0, len(code), 8)]
-    g = grouping_list[ver-1][error_correction_level_index_map[ecl]]
+    g = grouping_list[ver-1][error_correction_level_index_map[error_correction_level]]
     data_codewords, i = [], 0
     for n in range(g[0]):
         data_codewords.append(data_code[i:i+g[1]])
@@ -41,8 +50,8 @@ def encode(ver, ecl, str):
         i += g[3]
     
     return ver, data_codewords
-    
-def determine_qr_params(ver, ecl, str):
+
+def determine_qr_version_and_mode(ver, error_correction_level, str):
     # determine the best encoding mode and QR code version for the given string
     if all(i in num_list for i in str):
         mode = 'numeric'
@@ -55,27 +64,23 @@ def determine_qr_params(ver, ecl, str):
     m = mode_index_map[mode]
     l = len(str)
     for i in range(40):
-        if char_cap[ecl][i][m] > l:
+        if char_cap[error_correction_level][i][m] > l:
             ver = i + 1 if i+1 > ver else ver
             break
  
     return ver, mode
 
-def numeric_encoding(str):   
+def encode_numeric_data(str):   
     # encode numeric data in groups of 3 digits
     str_list = [str[i:i+3] for i in range(0, len(str), 3)]
     code = ''
     for i in str_list:
-        rqbin_len = 10
-        if len(i) == 1: 
-            rqbin_len = 4
-        elif len(i) == 2:
-            rqbin_len = 7
+        required_binary_length = 10 if len(i) == 1 else 7 if len(i) == 2 else 4
         code_temp = bin(int(i))[2:]
-        code += ('0'*(rqbin_len - len(code_temp)) + code_temp)
+        code += ('0'*(required_binary_length - len(code_temp)) + code_temp)
     return code
-    
-def alphanumeric_encoding(str):
+
+def encode_alphanumeric_data(str):
     # encode alphanumeric data in groups of 2 characters
     code_list = [alphanum_list.index(i) for i in str]
     code = ''
@@ -88,33 +93,30 @@ def alphanumeric_encoding(str):
         c = '0'*(6-len(c)) + c
         code += c
     return code
-    
-def byte_encoding(str):
+
+def encode_byte_data(str):
     # encode byte data using ISO-8859-1 encoding
     code = ''
     for i in str:
         c = bin(ord(i.encode('iso-8859-1')))[2:]
-        c = '0'*(8-len(c)) + c
+        c = '0' * (8 - len(c)) + c
         code += c
     return code
-    
-def kanji_encoding(str):
+
+def encode_kanji_data(str):
     # not yet implemented
     pass
-    
-def get_cci(ver, mode, str):
+
+def get_character_count_indicator(ver, mode, str):
     # get the character count indicator for the given version and encoding mode
-    if 1 <= ver <= 9:
-        cci_len = (10, 9, 8, 8)[mode_index_map[mode]]
-    elif 10 <= ver <= 26:
-        cci_len = (12, 11, 16, 10)[mode_index_map[mode]]
-    else:
-        cci_len = (14, 13, 16, 12)[mode_index_map[mode]]
-        
-    cci = bin(len(str))[2:]
-    cci = '0' * (cci_len - len(cci)) + cci
-    return cci
-    
+    cci_len = {(1, 'numeric'): 10, (1, 'alphanumeric'): 9, (1, 'byte'): 8,
+               (10, 'numeric'): 12, (10, 'alphanumeric'): 11, (10, 'byte'): 16,
+               (27, 'numeric'): 14, (27, 'alphanumeric'): 13, (27, 'byte'): 16,
+               (40, 'numeric'): 14, (40, 'alphanumeric'): 13, (40, 'byte'): 16}[(ver, mode)]
+    character_count_indicator = bin(len(str))[2:]
+    character_count_indicator = '0' * (cci_len - len(character_count_indicator)) + character_count_indicator
+    return character_count_indicator
+
 if __name__ == '__main__':
     # example usage
     s = '123456789'

@@ -3,8 +3,8 @@
 from blazeqr.qrlibs.constant import GP_list, ecc_num_per_block, error_correction_level_index_map, po2, log
  
 #ecc: Error Correction Codewords
-def encode(ver, ecl, data_codewords):
-    en = ecc_num_per_block[ver-1][error_correction_level_index_map[ecl]]
+def encode(ver, error_correction_level, data_codewords):
+    en = ecc_num_per_block[ver-1][error_correction_level_index_map[error_correction_level]]
     ecc = []
     for dc in data_codewords:
         ecc.append(get_ecc(dc, en))
