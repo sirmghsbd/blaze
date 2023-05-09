@@ -1,10 +1,4 @@
-# Amazing-QR
-
-[![former name](https://img.shields.io/badge/old%20name-MyQR-yellow)](https://pypi.org/project/myqr/) [![PyPI - Downloads](https://img.shields.io/pypi/dm/myqr?label=downloads@myqr)](https://pypi.org/project/myqr/) [![](https://img.shields.io/badge/language-Python-blue)](https://www.python.org/) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/amzqr?logo=python&logoColor=ffffff&label=Python&labelColor=blue&color=ffffff) [![PyPI](https://img.shields.io/pypi/v/amzqr?logo=pypi&logoColor=ffffff&label=PyPI&labelColor=blue)](https://pypi.org/project/amzqr/) ![PyPI - Wheel](https://img.shields.io/pypi/wheel/amzqr) [![PyPI - Downloads](https://img.shields.io/pypi/dm/amzqr)](https://pypi.org/project/amzqr/) [![PyPI - License](https://img.shields.io/pypi/l/amzqr)](https://github.com/x-hw/amazing-qr/blob/master/LICENSE.md) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/x-hw/amazing-qr) ![macos](https://img.shields.io/badge/-macOS-black?logo=macos) ![linux](https://img.shields.io/badge/-Linux-yellow?logo=linux) ![windows](https://img.shields.io/badge/-Windows-blue?logo=windows)
-
-[![](https://img.shields.io/badge/GitHub-x.hw-blue?logo=github)](https://github.com/x-hw) [![sponsor](https://img.shields.io/badge/sponsor--pink?logo=github-sponsors&labelColor=pink)](#buy-me-a-coffee)
-
-[*转到中文版*](https://github.com/x-hw/amazing-qr/blob/master/README-cn.md)
+# Blazing-QR
 
 ## Overview
 
@@ -13,8 +7,7 @@
 Generate *common qr-code*,  *artistic qr-code (black & white or colorized)*,  *animated qr-code (black & white or colorized)*.
 
 ## Contents
-
-* [Amazing-QR](#amazing-qr)
+* [Blazing-QR](#blazing-qr)
   * [Overview](#overview)
   * [Contents](#contents)
   * [Examples](#examples)
@@ -25,42 +18,28 @@ Generate *common qr-code*,  *artistic qr-code (black & white or colorized)*,  *a
   * [Tips](#tips)
   * [Supported Characters](#supported-characters)
   * [Environment](#environment)
-  * [License](#license)
-  * [Buy me a coffee ☕️](#buy-me-a-coffee)
-
-## Examples
-
-![](https://github.com/x-hw/amazing-qr/blob/master/example/qrs0.jpg)
-
-![](https://github.com/x-hw/amazing-qr/blob/master/example/qrs1.jpg)
-
-![](https://github.com/x-hw/amazing-qr/blob/master/example/qrs2.jpg)
-
-![](https://github.com/x-hw/amazing-qr/blob/master/example/c_qrcode.gif)![](https://github.com/x-hw/amazing-qr/blob/master/example/daftpunktocat-guy_qrcode.gif)
-
-![](https://github.com/x-hw/amazing-qr/blob/master/example/zootopia_qrcode.gif)![](https://github.com/x-hw/amazing-qr/blob/master/example/daftpunktocat-guy_qrcode0.gif)
 
 ## Install
 
 ```python
 # via pip
-pip install amzqr
+pip install blazeqr
 ```
 
 ## Usage
 
 ### Terminal Way  
 
-*(**TIPS**: If you haven't install [**amzqr**](https://pypi.python.org/pypi/amzqr), you should  `python(3) amzqr.py` instead of `amzqr` blow.)*
+*(**TIPS**: If you haven't install [**blazeqr**](https://pypi.python.org/pypi/blazeqr), you should  `python(3) blazeqr.py` instead of `blazeqr` blow.)*
 
 ```sh
 # summary
-amzqr Words
+blazeqr Words
       [-v {1,2,3,...,40}]
       [-l {L,M,Q,H}]
       [-n output-filename]
       [-d output-directory]
-      [-p picture_file]
+      [-p background_image_file]
       [-c]
       [-con contrast]
       [-bri brightness]
@@ -72,11 +51,11 @@ amzqr Words
 
 #### Common QR-Code
 
-![](https://github.com/x-hw/amazing-qr/blob/master/example/0.png)
+![](https://github.com/x-hw/blazing-qr/blob/master/example/0.png)
 
 ```markdown
 #1 Words
-amzqr https://github.com
+blazeqr https://github.com
 ```
 
 * Just input a URL or a sentence, then get your QR-Code named 'qrcode.png' in the current directory.
@@ -84,7 +63,7 @@ amzqr https://github.com
 
 ```markdown
 #2 -v, -l
-amzqr https://github.com -v 10 -l Q
+blazeqr https://github.com -v 10 -l Q
 ```
 
 * The **default** size of QR-Code depends both on the numbers of words you input and the level, while the **default** level (Error Correction Level) is **H** (the highest).
@@ -100,7 +79,7 @@ amzqr https://github.com -v 10 -l Q
 
 ```markdown
 #3 -n, -d
-amzqr https://github.com   -n github_qr.jpg   -d .../paths/
+blazeqr https://github.com   -n github_qr.jpg   -d .../paths/
 ```
 
 * The **default** output-filename is 'qrcode.png', while the **default** output-directory is current directory.
@@ -114,32 +93,32 @@ amzqr https://github.com   -n github_qr.jpg   -d .../paths/
 
 #### Artistic QR-Code
 
-![](https://github.com/x-hw/amazing-qr/blob/master/example/1.png)![](https://github.com/x-hw/amazing-qr/blob/master/example/2.png)
+![](https://github.com/x-hw/blazing-qr/blob/master/example/1.png)![](https://github.com/x-hw/blazing-qr/blob/master/example/2.png)
 
 
 ```markdown
 #1 -p
-amzqr https://github.com -p github.jpg
+blazeqr https://github.com -p github.jpg
 ```
 
-* The `-p` is to combine the QR-Code with the following picture which is in the same directory as the program. The resulting picture is **black and white** by default.
+* The `-p` is to combine_qr_background the QR-Code with the following background_image which is in the same directory as the program. The resulting background_image is **black and white** by default.
 
 
 ```markdown
 #2 -c
-amzqr https://github.com -p github.jpg -c
+blazeqr https://github.com -p github.jpg -c
 ```
 
-* The `-c` is to make the resulting picture **colorized**.
+* The `-c` is to make the resulting background_image **colorized**.
 
 
 
 ```markdown
 #3 -con, -bri
-amzqr https://github.com -p github.jpg [-c] -con 1.5 -bri 1.6
+blazeqr https://github.com -p github.jpg [-c] -con 1.5 -bri 1.6
 ```
 
-* The `-con` flag changes the **contrast** of the picture - a low number corresponds to low contrast and a high number to high contrast. **Default: 1.0**.
+* The `-con` flag changes the **contrast** of the background_image - a low number corresponds to low contrast and a high number to high contrast. **Default: 1.0**.
 
 * The `-bri` flag changes the **brightness** and the parameter values work the same as those for `-con`. **Default: 1.0**.
 
@@ -149,20 +128,20 @@ amzqr https://github.com -p github.jpg [-c] -con 1.5 -bri 1.6
 
 #### Animated GIF QR-Code
 
-![](https://github.com/x-hw/amazing-qr/blob/master/example/daftpunktocat-guy_qrcode.gif)![](https://github.com/x-hw/amazing-qr/blob/master/example/daftpunktocat-guy_qrcode0.gif)
+![](https://github.com/x-hw/blazing-qr/blob/master/example/daftpunktocat-guy_qrcode.gif)![](https://github.com/x-hw/blazing-qr/blob/master/example/daftpunktocat-guy_qrcode0.gif)
 
 The only difference from Artistic QR-Code mentioned above is that you should input an image file in the `.gif` format. The you can get your black-and-white or colorful qr-code. Remember that when you use `-n` to customize the output-filename, then the output-filename must end by `.gif`.
 
 ### Import Way
 
 ```python
-from amzqr import amzqr
+from blazeqr import blazeqr
 
-version, level, qr_name = amzqr.run(
+version, level, qr_name = blazeqr.generate_qr(
     words,
     version=1,
     level='H',
-    picture=None,
+    background_image=None,
     colorized=False,
     contrast=1.0,
     brightness=1.0,
@@ -174,7 +153,7 @@ version, level, qr_name = amzqr.run(
 *details about each parameter are as mentioned [above](#terminal-way)*
 
 ```python
-# help(amzqr)
+# help(blazeqr)
 Positional parameter
    words: str
 
@@ -191,13 +170,13 @@ Optional parameters
 
 ## Tips
 
-* Use a nearly **square** picture instead of a rectangle one.
+* Use a nearly **square** background_image instead of a rectangle one.
 
-* If the size of the picture is large, you should also choose a **rightly** large `-v` instead of using the default one.
+* If the size of the background_image is large, you should also choose a **rightly** large `-v` instead of using the default one.
 
-* If part of the picture is transparent, the qr code will look like: ![](https://github.com/x-hw/amazing-qr/blob/master/example/aa.png)
+* If part of the background_image is transparent, the qr code will look like: ![](https://github.com/x-hw/blazing-qr/blob/master/example/aa.png)
 
-  You can change the transparent layer to white, and then it will look like: ![](https://github.com/x-hw/amazing-qr/blob/master/example/a0.png)
+  You can change the transparent layer to white, and then it will look like: ![](https://github.com/x-hw/blazing-qr/blob/master/example/a0.png)
 
 ## Supported Characters
 
@@ -227,10 +206,10 @@ Optional parameters
 
 ![wechatpay](https://img.shields.io/badge/-wechat_pay-brightgreen?labelColor=brightgreen&logo=data:image/png;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAABILAAASCwAAAAAAAAAAAAAAAAAAGa0aABmtGg4ZrRoOGa0aABmtGgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmtGgAZrRpGGa0arBmtGkEZrRobGa0aOBmtGkwZrRpNGa0aORmtGhoZrRoDGa0aAAAAAAAAAAAAAAAAAAAAAAAZrRoAGa0aKBmtGucZrRrwGa0a3BmtGvIZrRr6Ga0a+xmtGvMZrRrYGa0alxmtGjcZrRoCGa0aAAAAAAAZrRoAGa0aBhmtGnMZrRr1Ga0a/xmtGv8ZrRr/Ga0a/xmtGv8ZrRr/Ga0a/xmtGv8ZrRroGa0adBmtGgkZrRoAGa0aAhmtGnEZrRr2Ga0a/xmtGv8ZrRr/Ga0a/xmtGv8ZrRr/Ga0a/xmtGv8ZrRr/Ga0a/xmtGvgZrRp5Ga0aAxmtGkEZrRrmGa0a/xmtGv8ZrRr+Ga0a8RmtGvsZrRr/Ga0a/xmtGv8ZrRr/Ga0a/xmtGv8ZrRr/Ga0a6hmtGkkZrRqlGa0a/xmtGv8ZrRr/Ga0a5RmtGkwZrRpzGa0a3hmtGv8ZrRr/Ga0a/xmtGv8ZrRr/Ga0a/xmtGv8ZrRqvGa0a3xmtGv8ZrRr/Ga0a/xmtGpkZrRoDGa0aABmtGicZrRqWGa0a7hmtGv8ZrRr/Ga0a/xmtGv8ZrRr/Ga0a5xmtGusZrRr/Ga0a/xmtGu0ZrRo9Ga0aPBmtGmcZrRohGa0aAxmtGj8ZrRq0Ga0a+BmtGv8ZrRr/Ga0a/xmtGvIZrRrQGa0a/xmtGv8ZrRrLGa0agRmtGukZrRr+Ga0a3RmtGosZrRowGa0aEBmtGlsZrRrNGa0a/RmtGv8ZrRrYGa0agxmtGv0ZrRr/Ga0a+hmtGvsZrRr/Ga0a/xmtGv8ZrRr/Ga0a6hmtGqIZrRpDGa0aJRmtGnsZrRrhGa0ajBmtGiAZrRrHGa0a/xmtGv8ZrRr/Ga0a/xmtGv8ZrRr/Ga0a/xmtGv8ZrRr/Ga0a9BmtGrcZrRpdGa0aOxmtGhoZrRoAGa0aPBmtGtcZrRr/Ga0a/xmtGv8ZrRr/Ga0a/xmtGv8ZrRr/Ga0a/xmtGv8ZrRr/Ga0a1BmtGiwZrRoAGa0aABmtGgAZrRowGa0arRmtGvQZrRr/Ga0a/xmtGv8ZrRr/Ga0a/xmtGv8ZrRr2Ga0asRmtGjQZrRoAGa0aAAAAAAAZrRoAGa0aABmtGgsZrRpFGa0ajRmtGrsZrRrPGa0azxmtGr0ZrRqQGa0aSBmtGgwZrRoAGa0aAAAAAAAAAAAAAAAAAAAAAAAAAAAAGa0aABmtGgEZrRoKGa0aFBmtGhUZrRoKGa0aARmtGgAAAAAAAAAAAAAAAAAAAAAAz/8AAMAPAADAAwAAgAEAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAgAEAAMADAADgBwAA+B8AAA==)
 
-<img src="https://github.com/x-hw/amazing-qr/blob/master/example/wechatpay.jpg" width = "124" height = "116" alt="wechatpay" align=center />
+<img src="https://github.com/x-hw/blazing-qr/blob/master/example/wechatpay.jpg" width = "124" height = "116" alt="wechatpay" align=center />
 
 ![alipay](https://img.shields.io/badge/-alipay-blue?logo=alipay&logoColor=ffffff&labelColor=blue)
 
-<img src="https://github.com/x-hw/amazing-qr/blob/master/example/alipay.gif" width = "132" height = "132" alt="alipay" align=center />
+<img src="https://github.com/x-hw/blazing-qr/blob/master/example/alipay.gif" width = "132" height = "132" alt="alipay" align=center />
 
 🎉🎉🎉 Thanks for your support. 🎉🎉🎉
