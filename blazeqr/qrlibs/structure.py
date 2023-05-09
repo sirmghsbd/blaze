@@ -17,7 +17,7 @@ def structure_final_bits(ver: int, error_correction_level: str, data_codewords: 
     final_message = interleave_dc(data_codewords, ver, error_correction_level) + interleave_ecc(ecc)
     
     # Convert to binary and add remainder bits if necessary
-    final_bits = ''.join(['0'*(8-len(i))+i for i in [bin(i)[2:] for i in final_message]]) + '0' * required_remainder_bits[ver-1]
+    final_bits = ''.join(['{:0>8b}'.format(i) for i in final_message]) + '0' * required_remainder_bits[ver-1]
     
     return final_bits
 
@@ -33,15 +33,13 @@ def interleave_dc(data_codewords: list, ver: int, error_correction_level: str) -
     Returns:
         list: The interleaved data codewords.
     """
-    interleaved_data = []
-    for t in zip(*data_codewords):
-        interleaved_data += list(t)
+    interleaved_data = [x for t in zip(*data_codewords) for x in t]
     
     # Add the last bit of each row for rectangular QR codes
-    g = grouping_list[ver-1][error_correction_level_index_map[error_correction_level]]
-    if g[3]:
-        for i in range(g[2]):
-            interleaved_data.append(data_codewords[i-g[2]][-1])
+    grouping = grouping_list[ver-1][error_correction_level_index_map[error_correction_level]]
+    if grouping[3]:
+        for i in range(grouping[2]):
+            interleaved_data.append(data_codewords[i-grouping[2]][-1])
     
     return interleaved_data
     
@@ -55,8 +53,6 @@ def interleave_ecc(ecc: list) -> list:
     Returns:
         list: The interleaved error correction codewords.
     """
-    interleaved_ecc = []
-    for t in zip(*ecc):
-        interleaved_ecc += list(t)
+    interleaved_ecc = [x for t in zip(*ecc) for x in t]
 
     return interleaved_ecc
