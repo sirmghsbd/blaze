@@ -75,7 +75,11 @@ def encode_numeric_data(str):
     str_list = [str[i:i+3] for i in range(0, len(str), 3)]
     code = ''
     for i in str_list:
-        required_binary_length = 10 if len(i) == 1 else 7 if len(i) == 2 else 4
+        required_binary_length = 10
+        if len(i) == 1:
+            required_binary_length = 4
+        elif len(i) == 2:
+            required_binary_length = 7
         code_temp = bin(int(i))[2:]
         code += ('0'*(required_binary_length - len(code_temp)) + code_temp)
     return code
@@ -109,10 +113,13 @@ def encode_kanji_data(str):
 
 def get_character_count_indicator(ver, mode, str):
     # get the character count indicator for the given version and encoding mode
-    cci_len = {(1, 'numeric'): 10, (1, 'alphanumeric'): 9, (1, 'byte'): 8,
-               (10, 'numeric'): 12, (10, 'alphanumeric'): 11, (10, 'byte'): 16,
-               (27, 'numeric'): 14, (27, 'alphanumeric'): 13, (27, 'byte'): 16,
-               (40, 'numeric'): 14, (40, 'alphanumeric'): 13, (40, 'byte'): 16}[(ver, mode)]
+    if 1 <= ver <= 9:
+        cci_len = (10, 9, 8, 8)[mode_index_map[mode]]
+    elif 10 <= ver <= 26:
+        cci_len = (12, 11, 16, 10)[mode_index_map[mode]]
+    else:
+        cci_len = (14, 13, 16, 12)[mode_index_map[mode]]
+
     character_count_indicator = bin(len(str))[2:]
     character_count_indicator = '0' * (cci_len - len(character_count_indicator)) + character_count_indicator
     return character_count_indicator

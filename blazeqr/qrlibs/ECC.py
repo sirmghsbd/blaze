@@ -4,10 +4,25 @@ from blazeqr.qrlibs.constant import GP_list, ecc_num_per_block, error_correction
  
 #ecc: Error Correction Codewords
 def encode(ver, error_correction_level, data_codewords):
+    """
+    Given the version, error correction level, and data codewords, returns the corresponding error correction codewords.
+
+    Args:
+        ver (int): The QR code version.
+        error_correction_level (str): The error correction level.
+        data_codewords (List[int]): The data codewords to encode.
+
+    Returns:
+        List[int]: The error correction codewords.
+    """
+    # Get the number of error correction codewords per block for this version and error correction level.
     en = ecc_num_per_block[ver-1][error_correction_level_index_map[error_correction_level]]
+
+    # Calculate the error correction codewords for each data codeword.
     ecc = []
     for dc in data_codewords:
         ecc.append(get_ecc(dc, en))
+
     return ecc
 
 def get_ecc(dc, ecc_num):

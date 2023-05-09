@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-     
 from blazeqr.qrlibs.constant import alignment_location, format_info_str, version_info_str, error_correction_level_index_map
     
 def get_qrmatrix(ver, error_correction_level, bits):
