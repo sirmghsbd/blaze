@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from blazeqr.qrlibs import data, ECC, structure, matrix, draw
 
 # ver: Version from 1 to 40
