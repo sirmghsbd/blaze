@@ -8,7 +8,7 @@ def draw_qrcode(abspath, qr_matrix):
     size = (len(qr_matrix)+8) * unit_len
 
     # Create image
-    pic = Image.new('1', (size, size), 'white')
+    pic = Image.new('1', (size, size), 'yellow')
     
     # Draw QR code
     for row, line in enumerate(qr_matrix):

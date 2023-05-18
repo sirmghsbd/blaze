@@ -142,7 +142,7 @@ def generate_qr(words, version=1, level='H', background_image=None, colorized=Fa
             qr_name = os.path.join(save_dir, os.path.basename(qr_name)) if not save_name else os.path.join(save_dir, save_name)
             qr.resize((qr.size[0]*3, qr.size[1]*3)).save(qr_name)
           
-        return ver, level, qr_name
+        return qr_name
         
     except:
         raise

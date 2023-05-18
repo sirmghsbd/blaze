@@ -8,8 +8,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
 # Define the setup parameters for the package
 setuptools.setup(
     name='blazeqr',
-    version='0.0.1',
-    keywords='qr qrcode blazing artistic animated gif colorized',
+    version='0.0.2',
+    keywords='offoma qr qrcode blazing artistic animated gif colorized',
     description='Generator for blazing QR Codes. Including Common, Artistic and Animated QR Codes.', # A short description of the package
     long_description=long_description,
     long_description_content_type="text/markdown",
