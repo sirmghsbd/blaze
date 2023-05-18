@@ -85,12 +85,12 @@ def generate_qr(words, version=1, level='H', background_image=None, colorized=Fa
         # Add alignment patterns to the QR code
         alignments = []
         if ver > 1:
-            aloc = alignment_location[ver-2]
-            for a in range(len(aloc)):
-                for b in range(len(aloc)):
-                    if not ((a==b==0) or (a==len(aloc)-1 and b==0) or (a==0 and b==len(aloc)-1)):
-                        for i in range(3*(aloc[a]-2), 3*(aloc[a]+3)):
-                            for j in range(3*(aloc[b]-2), 3*(aloc[b]+3)):
+            alignment_location_indices = alignment_location[ver-2]
+            for a in range(len(alignment_location_indices)):
+                for b in range(len(alignment_location_indices)):
+                    if not ((a==b==0) or (a==len(alignment_location_indices)-1 and b==0) or (a==0 and b==len(alignment_location_indices)-1)):
+                        for i in range(3*(alignment_location_indices[a]-2), 3*(alignment_location_indices[a]+3)):
+                            for j in range(3*(alignment_location_indices[b]-2), 3*(alignment_location_indices[b]+3)):
                                 alignments.append((i,j))
 
         for i in range(qr.size[0]-24):

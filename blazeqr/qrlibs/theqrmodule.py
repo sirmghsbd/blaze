@@ -14,7 +14,7 @@ def get_qrcode(ver, error_correction_level, str, save_place):
     final_bits = structure.structure_final_bits(ver, error_correction_level, data_codewords, ecc)
     
     # Get the QR Matrix
-    qrmatrix = matrix.get_qrmatrix(ver, error_correction_level, final_bits)
+    qr_matrix = matrix.getQrMatrix(ver, error_correction_level, final_bits)
         
     # Draw the background_image and Save it, then return the real ver and the absolute name
-    return ver, draw.draw_qrcode(save_place, qrmatrix)
+    return ver, draw.draw_qrcode(save_place, qr_matrix)
