@@ -1,3 +1,5 @@
+import sys
+
 from blazeqr.qrlibs.constant import (
     char_cap, 
     required_bytes, 
@@ -70,48 +72,60 @@ def determine_qr_version_and_mode(ver, error_correction_level, str):
  
     return ver, mode
 
-def encode_numeric_data(str):   
-    # encode numeric data in groups of 3 digits
-    str_list = [str[i:i+3] for i in range(0, len(str), 3)]
-    code = ''
-    for i in str_list:
-        required_binary_length = 10
-        if len(i) == 1:
-            required_binary_length = 4
-        elif len(i) == 2:
-            required_binary_length = 7
-        code_temp = bin(int(i))[2:]
-        code += ('0'*(required_binary_length - len(code_temp)) + code_temp)
-    return code
+def encode_numeric_data(data):
+    # Encode numeric data in groups of 3 digits
+    groups_of_three = [data[i:i+3] for i in range(0, len(data), 3)]
+    encoded_data = ''
+  
+    # Encode each group of 3 digits to binary
+    for group in groups_of_three:
+        required_binary_length = 10 if len(group) == 3 else (7 if len(group) == 2 else 4)
+        binary_value = bin(int(group))[2:].zfill(required_binary_length)
+        encoded_data += binary_value
+        
+    return encoded_data
 
-def encode_alphanumeric_data(str):
-    # encode alphanumeric data in groups of 2 characters
-    code_list = [alphanum_list.index(i) for i in str]
-    code = ''
-    for i in range(1, len(code_list), 2):
-        c = bin(code_list[i-1] * 45 + code_list[i])[2:]
-        c = '0'*(11-len(c)) + c
-        code += c
-    if i != len(code_list) - 1:
-        c = bin(code_list[-1])[2:]
-        c = '0'*(6-len(c)) + c
-        code += c
-    return code
+def encode_alphanumeric_data(data):
+    # Encode alphanumeric data in groups of 2 characters
+    code_list = [alphanum_list.index(char) for char in data]
+    encoded_data = ''
+    
+    # Encode each group of 2 characters to binary
+    for i in range(0, len(code_list), 2):
+        if i+1 < len(code_list):
+            value = code_list[i] * 45 + code_list[i+1]
+            binary_value = bin(value)[2:].zfill(11)
+            encoded_data += binary_value
+        else:
+            value = code_list[i]
+            binary_value = bin(value)[2:].zfill(6)
+            encoded_data += binary_value
+            
+    return encoded_data
 
-def encode_byte_data(str):
-    # encode byte data using ISO-8859-1 encoding
-    code = ''
-    for i in str:
-        c = bin(ord(i.encode('iso-8859-1')))[2:]
-        c = '0' * (8 - len(c)) + c
-        code += c
-    return code
+def encode_byte_data(data):
+    # Encode byte data using ISO-8859-1 encoding
+    encoded_data = ''
+    
+    # Encode each byte to binary
+    for char in data.encode('iso-8859-1'):
+        binary_value = bin(char)[2:].zfill(8)
+        encoded_data += binary_value
+            
+    return encoded_data
 
-def encode_kanji_data(str):
-    # not yet implemented
-    pass
+def encode_kanji_data(data):
+    # Encode Kanji data using UTF-8 encoding
+    encoded_data = ''
+    
+    # Encode each character to binary
+    for char in data.encode('utf-8'):
+        binary_value = bin(char)[2:].zfill(8)
+        encoded_data += binary_value
+            
+    return encoded_data
 
-def get_character_count_indicator(ver, mode, str):
+def get_character_count_indicator(ver, mode, data):
     # get the character count indicator for the given version and encoding mode
     if 1 <= ver <= 9:
         cci_len = (10, 9, 8, 8)[mode_index_map[mode]]
@@ -120,7 +134,7 @@ def get_character_count_indicator(ver, mode, str):
     else:
         cci_len = (14, 13, 16, 12)[mode_index_map[mode]]
 
-    character_count_indicator = bin(len(str))[2:]
+    character_count_indicator = bin(len(data))[2:]
     character_count_indicator = '0' * (cci_len - len(character_count_indicator)) + character_count_indicator
     return character_count_indicator
 

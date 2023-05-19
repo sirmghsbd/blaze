@@ -1,7 +1,7 @@
 import os
 from blazeqr.qrlibs import theqrmodule
 from PIL import Image
-   
+
 # Positional parameters
 #   words: str
 #
@@ -37,7 +37,7 @@ def generate_qr(words, version=1, level='H', background_image=None, colorized=Fa
 
     supported_chars = r"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ··,.:;+-*/\~!@#$%^&`'=<>[]()?_{}|"
 
-
+    # delete all these validations , because it checked by django
     # Check the validity of the input parameters
     if not isinstance(words, str) or any(i not in supported_chars for i in words):
         raise ValueError('Invalid characters in words! Make sure the characters are supported.')
