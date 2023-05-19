@@ -1,6 +1,9 @@
 import os
 from blazeqr.qrlibs import theqrmodule
-from PIL import Image
+from PIL import Image, ImageEnhance
+from blazeqr.qrlibs.constant import alignment_location
+
+SUPPORTED_CHARS = r"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ··,.:;+-*/\~!@#$%^&`'=<>[]()?_{}|"
 
 # Positional parameters
 #   words: str
@@ -35,11 +38,9 @@ def generate_qr(words, version=1, level='H', background_image=None, colorized=Fa
         A tuple containing the version of the QR code, the error-correction level used, and the path to the output file.
     """
 
-    supported_chars = r"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ··,.:;+-*/\~!@#$%^&`'=<>[]()?_{}|"
-
     # delete all these validations , because it checked by django
     # Check the validity of the input parameters
-    if not isinstance(words, str) or any(i not in supported_chars for i in words):
+    if not isinstance(words, str) or any(i not in SUPPORTED_CHARS for i in words):
         raise ValueError('Invalid characters in words! Make sure the characters are supported.')
     if not isinstance(version, int) or version not in range(1, 41):
         raise ValueError('Invalid version! Please choose an integer value from 1 to 40.')
@@ -63,9 +64,6 @@ def generate_qr(words, version=1, level='H', background_image=None, colorized=Fa
     
     # Define the function to combine_qr_background the QR code and the background image    
     def combine_qr_background(ver, qr_name, bg_name, colorized, contrast, brightness, save_dir, save_name=None):
-        from blazeqr.qrlibs.constant import alignment_location
-        from PIL import ImageEnhance, ImageFilter
-
         # Load the QR code and the background image
         qr = Image.open(qr_name)
         qr = qr.convert('RGBA') if colorized else qr
@@ -150,4 +148,4 @@ def generate_qr(words, version=1, level='H', background_image=None, colorized=Fa
         # Clean up temporary directory
         import shutil
         if os.path.exists(tempdir):
-            shutil.rmtree(tempdir) 
+            shutil.rmtree(tempdir)

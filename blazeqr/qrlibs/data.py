@@ -1,5 +1,3 @@
-import sys
-
 from blazeqr.qrlibs.constant import (
     char_cap, 
     required_bytes, 
@@ -19,13 +17,12 @@ encoding_functions = {
     'kanji': lambda s: encode_kanji_data(s)
 }
 
-def encode(ver, error_correction_level, str):
+def encode(ver, error_correction_level, data):
     # determine the best encoding mode and QR code version
-    ver, mode = determine_qr_version_and_mode(ver, error_correction_level, str)
-    print(f'mode: {mode}')
+    ver, mode = determine_qr_version_and_mode(ver, error_correction_level, data)
     
     # generate the QR code data
-    code = mode_indicator[mode] + get_character_count_indicator(ver, mode, str) + encoding_functions[mode](str)
+    code = mode_indicator[mode] + get_character_count_indicator(ver, mode, data) + encoding_functions[mode](data)
     
     # add a terminator
     required_bits = 8 * required_bytes[ver-1][error_correction_level_index_map[error_correction_level]]
@@ -53,18 +50,18 @@ def encode(ver, error_correction_level, str):
     
     return ver, data_codewords
 
-def determine_qr_version_and_mode(ver, error_correction_level, str):
-    # determine the best encoding mode and QR code version for the given string
-    if all(i in num_list for i in str):
+def determine_qr_version_and_mode(ver, error_correction_level, data):
+    # determine the best encoding mode and QR code version for the given data
+    if all(i in num_list for i in data):
         mode = 'numeric'
-    elif all(i in alphanum_list for i in str):
+    elif all(i in alphanum_list for i in data):
         mode = 'alphanumeric'
     else:
         mode = 'byte'
-    
+
     # find the smallest version that can accommodate the data at the given error correction level
     m = mode_index_map[mode]
-    l = len(str)
+    l = len(data)
     for i in range(40):
         if char_cap[error_correction_level][i][m] > l:
             ver = i + 1 if i+1 > ver else ver

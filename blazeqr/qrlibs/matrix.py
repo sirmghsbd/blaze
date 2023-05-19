@@ -1,34 +1,25 @@
+import numpy as np
 from blazeqr.qrlibs.constant import alignment_location, format_info_str, version_info_str, error_correction_level_index_map
 # generate a QR code matrix
 def getQrMatrix(ver, error_correction_level, bits):
-    num = (ver - 1) * 4 + 21
-    qr_matrix = [[None] * num for i in range(num)]
-    #  [([None] * num * num)[i:i+num] for i in range(num * num) if i % num == 0] 
+    # Compute the size of the QR matrix based on the version
+    size = (ver - 1) * 4 + 21
 
-    # Add the Finder Patterns & Add the Separators
+    # Initialize the QR matrix with None values
+    qr_matrix = [[None] * size for _ in range(size)]
+
     add_finder_and_separator(qr_matrix)
-    
-    # Add the Alignment Patterns
     add_alignment(ver, qr_matrix)
-
-    # Add the Timing Patterns
     add_timing(qr_matrix)
-
-    # Add the Dark Module and Reserved Areas
     add_dark_and_reserving(ver, qr_matrix)
 
-    maskMatrix = [i[:] for i in qr_matrix]
-    
-    # Place the Data Bits
+    mask_matrix = [row[:] for row in qr_matrix]
     place_bits(bits, qr_matrix)
-    
-    # Data Masking
-    mask_num, qr_matrix = mask(maskMatrix, qr_matrix)
-    
-    # Format Information
-    add_format_and_version_string(ver, error_correction_level, mask_num, qr_matrix)
 
+    mask_num, qr_matrix = mask(mask_matrix, qr_matrix)
+    add_format_and_version_string(ver, error_correction_level, mask_num, qr_matrix)
     return qr_matrix
+
 # adds the finder patterns and separators to the QR code matrix.
 def add_finder_and_separator(m):             
     for i in range(8):

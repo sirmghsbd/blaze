@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
-
 from blazeqr.qrlibs.constant import GP_list, ecc_num_per_block, error_correction_level_index_map, po2, log
- 
-#ecc: Error Correction Codewords
+
+
 def encode(ver, error_correction_level, data_codewords):
     """
     Given the version, error correction level, and data codewords, returns the corresponding error correction codewords.
@@ -16,14 +14,15 @@ def encode(ver, error_correction_level, data_codewords):
         List[int]: The error correction codewords.
     """
     # Get the number of error correction codewords per block for this version and error correction level.
-    en = ecc_num_per_block[ver-1][error_correction_level_index_map[error_correction_level]]
+    ecc_num = ecc_num_per_block[ver-1][error_correction_level_index_map[error_correction_level]]
 
     # Calculate the error correction codewords for each data codeword.
     ecc = []
     for dc in data_codewords:
-        ecc.append(get_ecc(dc, en))
+        ecc.append(get_ecc(dc, ecc_num))
 
     return ecc
+
 
 def get_ecc(dc, ecc_num):
     gp = GP_list[ecc_num]
